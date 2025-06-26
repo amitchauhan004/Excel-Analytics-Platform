@@ -6,7 +6,9 @@
       "use": "@vercel/node",
       "config": {
         "includeFiles": ["**/*"],
-        "maxLambdaSize": "50mb"
+        "maxLambdaSize": "50mb",
+        "memory": 1024,
+        "maxDuration": 60
       }
     }
   ],
@@ -22,12 +24,6 @@
       }
     }
   ],
-  "functions": {
-    "server.js": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  },
   "env": {
     "NODE_ENV": "production"
   }
