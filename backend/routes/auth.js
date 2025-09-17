@@ -173,6 +173,15 @@ router.post("/forgot-password", async (req, res) => {
 // Serve profile picture
 router.get("/profile-pic/:filename", (req, res) => {
   const filename = req.params.filename;
+  
+  // In production/serverless, profile pictures are not stored locally
+  if (process.env.NODE_ENV === 'production') {
+    return res.status(404).json({ 
+      error: "Profile picture not available in serverless environment" 
+    });
+  }
+  
+  // Development mode - check local file system
   const filePath = path.join(__dirname, "../uploads", filename);
   
   if (fs.existsSync(filePath)) {
@@ -199,19 +208,27 @@ router.put("/update", authMiddleware, upload.single("profilePic"), async (req, r
       user.password = await bcrypt.hash(password, salt);
     }
     
-    // Handle profile picture removal
-    if (removeProfilePic === "true" || removeProfilePic === true) {
-      // Delete old profile picture if exists
-      if (user.profilePic && fs.existsSync(path.join(__dirname, "../", user.profilePic))) {
-        fs.unlinkSync(path.join(__dirname, "../", user.profilePic));
+    // Handle profile picture removal/update (only in development)
+    if (process.env.NODE_ENV !== 'production') {
+      if (removeProfilePic === "true" || removeProfilePic === true) {
+        // Delete old profile picture if exists
+        if (user.profilePic && fs.existsSync(path.join(__dirname, "../", user.profilePic))) {
+          fs.unlinkSync(path.join(__dirname, "../", user.profilePic));
+        }
+        user.profilePic = null;
+      } else if (req.file) {
+        // Delete old profile picture if exists
+        if (user.profilePic && fs.existsSync(path.join(__dirname, "../", user.profilePic))) {
+          fs.unlinkSync(path.join(__dirname, "../", user.profilePic));
+        }
+        user.profilePic = req.file.path;
       }
-      user.profilePic = null;
-    } else if (req.file) {
-      // Delete old profile picture if exists
-      if (user.profilePic && fs.existsSync(path.join(__dirname, "../", user.profilePic))) {
-        fs.unlinkSync(path.join(__dirname, "../", user.profilePic));
+    } else {
+      // In production, disable profile picture functionality
+      if (removeProfilePic === "true" || removeProfilePic === true) {
+        user.profilePic = null;
       }
-      user.profilePic = req.file.path;
+      // Note: Profile picture upload is disabled in production
     }
 
     await user.save();
@@ -280,7 +297,9 @@ router.get("/data/:fileId", async (req, res) => {
 
   try {
     if (fileId) {
-      const response = await axios.get(`http://localhost:5000/api/data/file/${fileId}`);
+      // Use environment variable for API URL or construct from request
+      const baseUrl = process.env.API_URL || `${req.protocol}://${req.get('host')}`;
+      const response = await axios.get(`${baseUrl}/api/data/file/${fileId}`);
       res.json(response.data);
     } else {
       res.status(400).json({ msg: "File ID is required" });
