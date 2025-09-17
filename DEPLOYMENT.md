@@ -23,6 +23,8 @@ NODE_ENV=production
 4. **Fixed file uploads** - Uses memory storage in production
 5. **Added health check** - `/api/health` endpoint
 6. **Database connection** - Added timeout settings for serverless
+7. **Created `api/index.js`** - Serverless function entry point
+8. **Updated root package.json** - Added backend dependencies
 
 ## Deployment Steps
 
@@ -30,6 +32,15 @@ NODE_ENV=production
 2. Connect your repository to Vercel
 3. Set all environment variables in Vercel dashboard
 4. Deploy
+
+## Troubleshooting 404 NOT_FOUND Errors
+
+If you're getting 404 errors with `BODY_NOT_A_STRING_FROM_FUNCTION`:
+
+1. **Check Environment Variables**: Ensure all required environment variables are set in Vercel
+2. **Test Basic Endpoints**: Try `/api/health` and `/api/test` first
+3. **Check MongoDB Connection**: Ensure your MONGO_URI is correct and accessible
+4. **Verify CORS Settings**: Make sure your frontend URL is in the allowed origins
 
 ## Important Notes
 
@@ -42,5 +53,13 @@ NODE_ENV=production
 
 After deployment, test these endpoints:
 - `GET /api/health` - Should return status OK
+- `GET /api/test` - Should return "API is working!"
 - `POST /api/auth/login` - Test authentication
 - `POST /api/upload` - Test file upload (files won't be downloadable)
+
+## Common Issues
+
+1. **404 NOT_FOUND**: Check if environment variables are set correctly
+2. **MongoDB Connection Error**: Verify MONGO_URI format and network access
+3. **CORS Errors**: Update allowed origins in server.js
+4. **Function Timeout**: Check database connection timeout settings
