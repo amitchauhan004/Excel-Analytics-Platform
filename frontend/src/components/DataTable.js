@@ -13,7 +13,7 @@ const DataTable = ({ fileId }) => {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:5000/api/data/file/${fileId}`, {
+        const response = await axios.get(`https://excel-analytics-platform-flame.vercel.app/api/data/file/${fileId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setData(response.data);

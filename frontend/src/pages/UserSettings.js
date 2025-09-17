@@ -41,7 +41,7 @@ const UserSettings = () => {
         if (profilePic) formData.append("profilePic", profilePic);
 
         try {
-            const res = await axios.put("http://localhost:5000/api/auth/update", formData, {
+            const res = await axios.put("https://excel-analytics-platform-flame.vercel.app/api/auth/update", formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "multipart/form-data",
@@ -82,7 +82,7 @@ const UserSettings = () => {
 
         setIsLoading(true);
         try {
-            const res = await axios.put("http://localhost:5000/api/auth/update", {
+            const res = await axios.put("https://excel-analytics-platform-flame.vercel.app/api/auth/update", {
                 name: name,
                 removeProfilePic: true
             }, {
@@ -127,7 +127,7 @@ const UserSettings = () => {
 
         setIsDeleting(true);
         try {
-            const res = await axios.delete("http://localhost:5000/api/auth/delete-account", {
+            const res = await axios.delete("https://excel-analytics-platform-flame.vercel.app/api/auth/delete-account", {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                     "Content-Type": "application/json",

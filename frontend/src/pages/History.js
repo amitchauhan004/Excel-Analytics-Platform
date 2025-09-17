@@ -13,7 +13,7 @@ const History = () => {
     setIsLoading(true);
     setError("");
     axios
-      .get("http://localhost:5000/api/files", {
+      .get("https://excel-analytics-platform-flame.vercel.app/api/files", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -63,7 +63,7 @@ const History = () => {
   const handleDeleteFile = async (fileId, fileName) => {
     if (window.confirm(`Are you sure you want to delete "${fileName}"?`)) {
       try {
-        await axios.delete(`http://localhost:5000/api/files/${fileId}`, {
+        await axios.delete(`https://excel-analytics-platform-flame.vercel.app/api/files/${fileId}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -126,7 +126,7 @@ const History = () => {
                 <button
                   onClick={() => {
                     if (file.downloadUrl) {
-                      window.open(`http://localhost:5000${file.downloadUrl}`, "_blank");
+                      window.open(`https://excel-analytics-platform-flame.vercel.app${file.downloadUrl}`, "_blank");
                     } else {
                       alert("Download URL not available");
                     }

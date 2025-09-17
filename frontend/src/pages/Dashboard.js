@@ -103,7 +103,7 @@ const Dashboard = () => {
   const fetchDashboardData = () => {
     // Fetch summary data
     axios
-      .get("http://localhost:5000/api/dashboard/summary", {
+      .get("https://excel-analytics-platform-flame.vercel.app/api/dashboard/summary", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -123,7 +123,7 @@ const Dashboard = () => {
 
     // Fetch recent activity
     axios
-      .get("http://localhost:5000/api/dashboard/activity", {
+      .get("https://excel-analytics-platform-flame.vercel.app/api/dashboard/activity", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -138,7 +138,7 @@ const Dashboard = () => {
 
     // Fetch history statistics
     axios
-      .get("http://localhost:5000/api/dashboard/history/stats", {
+      .get("https://excel-analytics-platform-flame.vercel.app/api/dashboard/history/stats", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -184,7 +184,7 @@ const Dashboard = () => {
     if (!window.confirm("Are you sure you want to delete this file? This action cannot be undone.")) return;
 
     axios
-      .delete(`http://localhost:5000/api/files/${fileId}`, {
+      .delete(`https://excel-analytics-platform-flame.vercel.app/api/files/${fileId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -224,7 +224,7 @@ const Dashboard = () => {
 
   const handleDownloadFile = (file) => {
     if (file.downloadUrl) {
-      window.open(`http://localhost:5000${file.downloadUrl}`, "_blank");
+      window.open(`https://excel-analytics-platform-flame.vercel.app${file.downloadUrl}`, "_blank");
     } else {
       alert("Download URL not available");
     }
@@ -279,7 +279,7 @@ const Dashboard = () => {
               >
                 {user?.profilePic ? (
                   <img
-                    src={user.profilePic.startsWith('http') ? user.profilePic : `http://localhost:5000${user.profilePic}`}
+                    src={user.profilePic.startsWith('http') ? user.profilePic : `https://excel-analytics-platform-flame.vercel.app${user.profilePic}`}
                     alt="User Profile"
                     className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-primary-200"
                   />

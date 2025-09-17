@@ -28,7 +28,7 @@ const DataAnalysis = () => {
         let file;
         
         // First, fetch all files for the selector
-        const filesRes = await axios.get(`http://localhost:5000/api/files`, {
+        const filesRes = await axios.get(`https://excel-analytics-platform-flame.vercel.app/api/files`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -37,7 +37,7 @@ const DataAnalysis = () => {
         
         if (fileId) {
           // Fetch specific file data
-          res = await axios.get(`http://localhost:5000/api/data/file/${fileId}`, {
+          res = await axios.get(`https://excel-analytics-platform-flame.vercel.app/api/data/file/${fileId}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -54,7 +54,7 @@ const DataAnalysis = () => {
             file = latestFile;
             
             // Fetch data for the latest file
-            res = await axios.get(`http://localhost:5000/api/data/file/${latestFile._id}`, {
+            res = await axios.get(`https://excel-analytics-platform-flame.vercel.app/api/data/file/${latestFile._id}`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },

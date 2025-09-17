@@ -18,7 +18,7 @@ const DataView = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/files', {
+      const response = await axios.get('https://excel-analytics-platform-flame.vercel.app/api/files', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFiles(response.data);
@@ -43,7 +43,7 @@ const DataView = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/files/${fileId}`, {
+      await axios.delete(`https://excel-analytics-platform-flame.vercel.app/api/files/${fileId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchFiles();

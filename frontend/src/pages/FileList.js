@@ -5,7 +5,7 @@ const FileList = () => {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/files")
+    axios.get("https://excel-analytics-platform-flame.vercel.app/api/files")
       .then(res => setFiles(res.data));
   }, []);
 

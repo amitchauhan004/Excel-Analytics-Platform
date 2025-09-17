@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useHistory, Link } from "react-router-dom";
+import { API_ENDPOINTS } from "../config/api";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +33,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", {
+      const response = await axios.post(API_ENDPOINTS.REGISTER, {
         name: formData.name,
         email: formData.email,
         password: formData.password,

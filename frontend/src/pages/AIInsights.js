@@ -40,7 +40,7 @@ const AIInsights = () => {
   const fetchFiles = async () => {
     try {
       console.log("Fetching files...");
-      const res = await axios.get("http://localhost:5000/api/files", {
+      const res = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/files", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -59,7 +59,7 @@ const AIInsights = () => {
     setError(""); // Clear previous errors
     try {
       console.log("Fetching insights...");
-      const res = await axios.get("http://localhost:5000/api/insights", {
+      const res = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/insights", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -81,7 +81,7 @@ const AIInsights = () => {
     setError(""); // Clear previous errors
     try {
       console.log("Analyzing file with ID:", fileId);
-      const res = await axios.get(`http://localhost:5000/api/insights/${fileId}/analyze`, {
+      const res = await axios.get(`https://excel-analytics-platform-flame.vercel.app/api/insights/${fileId}/analyze`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

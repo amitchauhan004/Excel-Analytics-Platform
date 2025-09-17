@@ -11,7 +11,8 @@ const app = express();
 // CORS configuration for production
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://excel-analytics-platform.vercel.app", // Replace with your actual frontend URL
+  "https://excel-analytics-platform.vercel.app", // Your backend URL
+  "https://your-frontend-netlify-url.netlify.app", // Replace with your Netlify frontend URL
   process.env.FRONTEND_URL
 ].filter(Boolean);
 

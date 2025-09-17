@@ -16,7 +16,7 @@ const AIInsights = ({ fileId }) => {
       setLoading(true);
       setError(null);
       const res = await axios.get(
-        `http://localhost:5000/api/insights/${fileId}/analyze`,
+        `https://excel-analytics-platform-flame.vercel.app/api/insights/${fileId}/analyze`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

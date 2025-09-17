@@ -17,7 +17,7 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
     setIsLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/dashboard/history?page=${page}&limit=10&type=${type}&dateRange=${range}`,
+        `https://excel-analytics-platform-flame.vercel.app/api/dashboard/history?page=${page}&limit=10&type=${type}&dateRange=${range}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
@@ -58,9 +58,9 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
     try {
       // Debugging fileId and API URL
       console.log("Deleting file with ID:", fileId);
-      console.log(`http://localhost:5000/api/files/${fileId}`);
+      console.log(`https://excel-analytics-platform-flame.vercel.app/api/files/${fileId}`);
 
-      await axios.delete(`http://localhost:5000/api/files/${fileId}`, {
+      await axios.delete(`https://excel-analytics-platform-flame.vercel.app/api/files/${fileId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -85,7 +85,7 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
 
     setIsDeleting(true);
     try {
-      const response = await axios.delete(`http://localhost:5000/api/files/bulk/delete`, {
+      const response = await axios.delete(`https://excel-analytics-platform-flame.vercel.app/api/files/bulk/delete`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -142,7 +142,7 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
 
   const handleDownload = (file) => {
     if (file.downloadUrl) {
-      window.open(`http://localhost:5000${file.downloadUrl}`, "_blank");
+      window.open(`https://excel-analytics-platform-flame.vercel.app${file.downloadUrl}`, "_blank");
     } else {
       alert("Download URL not available");
     }

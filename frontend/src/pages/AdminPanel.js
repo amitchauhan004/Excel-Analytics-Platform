@@ -70,7 +70,7 @@ const AdminPanel = () => {
       // Fetch admin stats from backend
       let adminStats = null;
       try {
-        const statsRes = await axios.get("http://localhost:5000/api/admin/stats", {
+        const statsRes = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/admin/stats", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         adminStats = statsRes.data;
@@ -81,7 +81,7 @@ const AdminPanel = () => {
 
       // Fetch users
       try {
-        const usersRes = await axios.get("http://localhost:5000/api/admin/users", {
+        const usersRes = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/admin/users", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setUsers(usersRes.data);
@@ -91,7 +91,7 @@ const AdminPanel = () => {
 
       // Fetch files data
       try {
-        const filesRes = await axios.get("http://localhost:5000/api/files", {
+        const filesRes = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/files", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setAllFiles(filesRes.data);
@@ -154,7 +154,7 @@ const AdminPanel = () => {
       // Fetch admin stats from backend
       let adminStats = null;
       try {
-        const statsRes = await axios.get("http://localhost:5000/api/admin/stats", {
+        const statsRes = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/admin/stats", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         adminStats = statsRes.data;
@@ -167,7 +167,7 @@ const AdminPanel = () => {
       // Fetch users
       let usersData = [];
       try {
-        const usersRes = await axios.get("http://localhost:5000/api/admin/users", {
+        const usersRes = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/admin/users", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         usersData = usersRes.data;
@@ -189,7 +189,7 @@ const AdminPanel = () => {
       // Fetch files data
       let filesData = [];
       try {
-        const filesRes = await axios.get("http://localhost:5000/api/files", {
+        const filesRes = await axios.get("https://excel-analytics-platform-flame.vercel.app/api/files", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         filesData = filesRes.data;
@@ -324,7 +324,7 @@ const AdminPanel = () => {
       const userDetailsMap = {};
       for (const user of usersData) {
         try {
-          const userDetailRes = await axios.get(`http://localhost:5000/api/admin/users/${user._id}`, {
+          const userDetailRes = await axios.get(`https://excel-analytics-platform-flame.vercel.app/api/admin/users/${user._id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           });
           userDetailsMap[user._id] = userDetailRes.data;
@@ -364,7 +364,7 @@ const AdminPanel = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/admin/users/${userId}`, {
+      await axios.delete(`https://excel-analytics-platform-flame.vercel.app/api/admin/users/${userId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setUsers(users.filter((user) => user._id !== userId));
@@ -379,7 +379,7 @@ const AdminPanel = () => {
   const handleRoleUpdate = async (userId, newRole) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/users/${userId}`,
+        `https://excel-analytics-platform-flame.vercel.app/api/admin/users/${userId}`,
         { role: newRole },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -406,7 +406,7 @@ const AdminPanel = () => {
 
       try {
         for (const userId of selectedUsers) {
-          await axios.delete(`http://localhost:5000/api/admin/users/${userId}`, {
+          await axios.delete(`https://excel-analytics-platform-flame.vercel.app/api/admin/users/${userId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           });
         }
@@ -424,7 +424,7 @@ const AdminPanel = () => {
 
       try {
         for (const userId of selectedUsers) {
-          await axios.put(`http://localhost:5000/api/admin/users/${userId}/role`, 
+          await axios.put(`https://excel-analytics-platform-flame.vercel.app/api/admin/users/${userId}/role`, 
             { role: "admin" },
             { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
           );
@@ -443,7 +443,7 @@ const AdminPanel = () => {
 
       try {
         for (const userId of selectedUsers) {
-          await axios.put(`http://localhost:5000/api/admin/users/${userId}/role`, 
+          await axios.put(`https://excel-analytics-platform-flame.vercel.app/api/admin/users/${userId}/role`, 
             { role: "user" },
             { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
           );
@@ -464,7 +464,7 @@ const AdminPanel = () => {
     if (!window.confirm(confirmMessage)) return;
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/files/cleanup`, {}, {
+      const response = await axios.post(`https://excel-analytics-platform-flame.vercel.app/api/files/cleanup`, {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       
