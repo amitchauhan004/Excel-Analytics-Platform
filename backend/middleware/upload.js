@@ -1,17 +1,14 @@
 const multer = require("multer");
 const path = require("path");
 
-// For serverless environments, use memory storage instead of disk storage
-const storage = process.env.NODE_ENV === 'production' 
-  ? multer.memoryStorage() // Use memory storage in production (serverless)
-  : multer.diskStorage({   // Use disk storage in development
-      destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, "../uploads/"));
-      },
-      filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-      },
-    });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../uploads/")); // Use absolute path
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
 
 const upload = multer({
   storage,

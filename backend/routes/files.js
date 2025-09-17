@@ -12,17 +12,6 @@ const cleanupOrphanedFiles = async () => {
   try {
     console.log("Starting orphaned files cleanup...");
     
-    // Skip cleanup in production/serverless environment
-    if (process.env.NODE_ENV === 'production') {
-      console.log("Skipping file cleanup in production (serverless environment)");
-      return {
-        success: true,
-        message: "File cleanup skipped in serverless environment",
-        filesDeleted: 0,
-        errors: []
-      };
-    }
-    
     // Get all files in the uploads directory
     const uploadsDir = path.join(__dirname, "../uploads");
     if (!fs.existsSync(uploadsDir)) {
@@ -111,15 +100,6 @@ router.get("/", authMiddleware, async (req, res) => {
 // Download a file by filename
 router.get("/download/:filename", authMiddleware, (req, res) => {
   const filename = req.params.filename;
-  
-  // In production/serverless, files are not stored locally
-  if (process.env.NODE_ENV === 'production') {
-    return res.status(404).json({ 
-      error: "File download not available in serverless environment. Files are processed and stored in database only." 
-    });
-  }
-  
-  // Development mode - check local file system
   const filePath = path.join(__dirname, "../uploads", filename);
   
   if (fs.existsSync(filePath)) {
@@ -158,27 +138,21 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     
     console.log(`Deleted ${dataRowsDeleted.deletedCount} data rows for file ${fileId}`);
     
-    // Delete the actual file from storage (only in development)
+    // Delete the actual file from storage
+    const filePath = path.join(__dirname, "../uploads", file.storedName);
     let fileDeleted = false;
     
-    if (process.env.NODE_ENV !== 'production') {
-      const filePath = path.join(__dirname, "../uploads", file.storedName);
-      
-      if (fs.existsSync(filePath)) {
-        try {
-          fs.unlinkSync(filePath);
-          fileDeleted = true;
-          console.log(`Successfully deleted file from storage: ${filePath}`);
-        } catch (fileError) {
-          console.error(`Error deleting file from storage: ${fileError.message}`);
-          // Continue with database deletion even if file deletion fails
-        }
-      } else {
-        console.log(`File not found in storage: ${filePath}`);
+    if (fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+        fileDeleted = true;
+        console.log(`Successfully deleted file from storage: ${filePath}`);
+      } catch (fileError) {
+        console.error(`Error deleting file from storage: ${fileError.message}`);
+        // Continue with database deletion even if file deletion fails
       }
     } else {
-      console.log("Skipping file deletion in production (serverless environment)");
-      fileDeleted = true; // Consider it successful since files aren't stored locally
+      console.log(`File not found in storage: ${filePath}`);
     }
     
     // Delete the file metadata from database
@@ -249,22 +223,17 @@ router.delete("/bulk/delete", authMiddleware, async (req, res) => {
           uploadedBy: userId 
         });
         
-        // Delete file from storage (only in development)
+        // Delete file from storage
+        const filePath = path.join(__dirname, "../uploads", file.storedName);
         let fileDeleted = false;
         
-        if (process.env.NODE_ENV !== 'production') {
-          const filePath = path.join(__dirname, "../uploads", file.storedName);
-          
-          if (fs.existsSync(filePath)) {
-            try {
-              fs.unlinkSync(filePath);
-              fileDeleted = true;
-            } catch (fileError) {
-              console.error(`Error deleting file from storage: ${fileError.message}`);
-            }
+        if (fs.existsSync(filePath)) {
+          try {
+            fs.unlinkSync(filePath);
+            fileDeleted = true;
+          } catch (fileError) {
+            console.error(`Error deleting file from storage: ${fileError.message}`);
           }
-        } else {
-          fileDeleted = true; // Consider it successful in serverless environment
         }
         
         // Delete file metadata

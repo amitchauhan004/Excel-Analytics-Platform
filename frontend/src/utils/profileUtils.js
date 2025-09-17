@@ -1,7 +1,6 @@
 /**
  * Utility functions for handling profile pictures
  */
-import API_BASE_URL from '../config/api';
 
 /**
  * Get the full URL for a profile picture
@@ -18,11 +17,11 @@ export const getProfilePicUrl = (profilePic) => {
   
   // If it's a relative path, construct the full URL
   if (profilePic.startsWith('/')) {
-    return `${API_BASE_URL}${profilePic}`;
+    return `http://localhost:5000${profilePic}`;
   }
   
   // If it's just a filename, construct the full URL
-  return `${API_BASE_URL}/api/auth/profile-pic/${profilePic}`;
+  return `http://localhost:5000/api/auth/profile-pic/${profilePic}`;
 };
 
 /**
