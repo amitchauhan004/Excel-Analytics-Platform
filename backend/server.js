@@ -12,6 +12,40 @@ const allowedOrigin = process.env.CLIENT_URL || true;
 app.use(cors({ origin: allowedOrigin, credentials: true }));
 app.use(express.json());
 
+// Serverless MongoDB connection middleware
+let isConnected = false;
+const connectDB = async () => {
+  if (isConnected || mongoose.connection.readyState >= 1) {
+    isConnected = true;
+    return;
+  }
+  if (!process.env.MONGO_URI) {
+    console.error("⚠️ MONGO_URI is missing in environment variables!");
+    return;
+  }
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    isConnected = true;
+    console.log("MongoDB connected");
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+  }
+};
+
+// Connect DB middleware for serverless
+app.use(async (req, res, next) => {
+  await connectDB();
+  next();
+});
+
+// Root / Health check route
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "XcelFlow API Server is running" });
+});
+
 // Serve static files from uploads directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -36,14 +70,11 @@ app.use("/api/explain", require("./routes/explain"));
 app.use("/api/story", require("./routes/story"));
 app.use("/api/contact", require("./routes/contact")); // Add Contact Form route
 
+// Local server listen (non-Vercel environment)
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
 
-
-
-
-mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Export app for Vercel Serverless Functions
+module.exports = app;
