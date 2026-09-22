@@ -1,9 +1,19 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
+
+const uploadsDir = process.env.VERCEL ? "/tmp" : path.join(__dirname, "../uploads/");
+if (!fs.existsSync(uploadsDir)) {
+  try {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  } catch (err) {
+    console.error("Could not create uploads directory:", err);
+  }
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads/"));
+    cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
