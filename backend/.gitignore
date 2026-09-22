@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Environment variables (CRITICAL SECURITY)
+.env
+.env.local
+*.env
+
+# Uploaded User Files
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*

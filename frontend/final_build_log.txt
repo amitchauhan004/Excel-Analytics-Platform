@@ -1,0 +1,14 @@
+﻿
+> your-project-name@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Failed to compile.
+
+[eslint] 
+src\components\AutonomousAgent.jsx
+  Line 14:50:  'API_BASE_URL' is not defined  no-undef
+
+Search for the keywords to learn more about each error.
+
+

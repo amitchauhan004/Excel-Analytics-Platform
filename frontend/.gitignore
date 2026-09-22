@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Production builds
+build/
+dist/
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+npm-debug.log*
