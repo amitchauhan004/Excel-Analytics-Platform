@@ -89,7 +89,10 @@ app.use("/api/workflow", require("./routes/workflow"));
 app.use("/api/health", require("./routes/health"));
 app.use("/api/explain", require("./routes/explain"));
 app.use("/api/story", require("./routes/story"));
-app.use("/api/contact", require("./routes/contact")); // Add Contact Form route
+// 404 Fallback for unmatched routes
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found", path: req.originalUrl });
+});
 
 // Local server listen (non-Vercel environment)
 if (!process.env.VERCEL) {
