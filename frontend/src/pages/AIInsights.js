@@ -37,6 +37,7 @@ const AIInsights = () => {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files, location.search]);
 
   const fetchFiles = async () => {

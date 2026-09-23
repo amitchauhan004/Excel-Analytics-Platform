@@ -16,7 +16,6 @@ const UserSettings = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Password States
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPasswords, setShowPasswords] = useState(false);
@@ -176,7 +175,6 @@ const UserSettings = () => {
 
       setNewPassword("");
       setConfirmPassword("");
-      setCurrentPassword("");
 
       success("Password updated successfully!");
     } catch (err) {

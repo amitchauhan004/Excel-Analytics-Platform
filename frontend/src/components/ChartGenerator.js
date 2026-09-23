@@ -178,63 +178,7 @@ const ChartGenerator = ({ data }) => {
     },
   };
 
-  // Pie chart specific options
-  const pieChartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'right',
-        labels: {
-          padding: 20,
-          usePointStyle: true,
-          font: {
-            family: 'Inter, sans-serif',
-            size: 12,
-            weight: '500'
-          },
-        },
-      },
-      title: {
-        display: true,
-        text: 'Pie Chart',
-        font: {
-          family: 'Poppins, sans-serif',
-          size: 18,
-          weight: '600'
-        },
-        color: '#374151',
-        padding: 20,
-      },
-    },
-  };
 
-  // Pie chart data
-  const pieChartData = {
-    labels: data.map(row => row[xAxis]),
-    datasets: [
-      {
-        data: data.map(row => row[yAxis]),
-        backgroundColor: [
-          'rgba(14, 165, 233, 0.8)',
-          'rgba(59, 130, 246, 0.8)',
-          'rgba(139, 92, 246, 0.8)',
-          'rgba(245, 158, 11, 0.8)',
-          'rgba(16, 185, 129, 0.8)',
-          'rgba(239, 68, 68, 0.8)',
-        ],
-        borderColor: [
-          'rgba(14, 165, 233, 1)',
-          'rgba(59, 130, 246, 1)',
-          'rgba(139, 92, 246, 1)',
-          'rgba(245, 158, 11, 1)',
-          'rgba(16, 185, 129, 1)',
-          'rgba(239, 68, 68, 1)',
-        ],
-        borderWidth: 2,
-      },
-    ],
-  };
 
   // Enhanced 3D Plotly data with multiple chart types
   const generate3DData = () => {
