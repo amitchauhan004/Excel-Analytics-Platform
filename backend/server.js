@@ -1,3 +1,6 @@
+const dns = require("dns");
+dns.setDefaultResultOrder("ipv4first");
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -12,26 +15,40 @@ const allowedOrigin = process.env.CLIENT_URL || true;
 app.use(cors({ origin: allowedOrigin, credentials: true }));
 app.use(express.json());
 
-// Serverless MongoDB connection middleware
+// Smart MongoDB connection middleware with auto-fallback for local Windows DNS SRV issues
 let isConnected = false;
 const connectDB = async () => {
   if (isConnected || mongoose.connection.readyState >= 1) {
     isConnected = true;
     return;
   }
-  if (!process.env.MONGO_URI) {
-    console.error("⚠️ MONGO_URI is missing in environment variables!");
+
+  let uri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/excel_analytics";
+
+  if (!process.env.VERCEL) {
+    // Local environment: Attempt cloud URI if provided, fallback seamlessly to local database if DNS SRV is refused by local ISP
+    try {
+      if (uri.startsWith("mongodb+srv://")) {
+        await mongoose.connect(uri, { serverSelectionTimeoutMS: 2500 });
+        isConnected = true;
+        console.log("MongoDB connected: Cloud Database (Atlas)");
+        return;
+      }
+    } catch (srvErr) {
+      console.warn("⚠️ Cloud SRV DNS lookup failed locally. Auto-switching to Local MongoDB...");
+      uri = "mongodb://127.0.0.1:27017/excel_analytics";
+    }
+  } else if (process.env.VERCEL && uri.includes("localhost")) {
+    console.error("⚠️ MONGO_URI is pointing to localhost on Vercel. Please set MongoDB Atlas cloud URI in Vercel settings.");
     return;
   }
+
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
     isConnected = true;
-    console.log("MongoDB connected");
+    console.log("MongoDB connected:", uri.includes("127.0.0.1") || uri.includes("localhost") ? "Local Database" : "Cloud Database");
   } catch (err) {
-    console.error("MongoDB connection error:", err);
+    console.error("MongoDB connection error:", err.message);
   }
 };
 
