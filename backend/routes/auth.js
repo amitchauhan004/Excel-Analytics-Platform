@@ -13,7 +13,8 @@ const { authMiddleware } = require("../middleware/authMiddleware");
 const { deleteUserCompletely } = require("../utils/userDeletion");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const upload = multer({ dest: "uploads/" }); // For profile picture uploads
+const uploadDir = process.env.VERCEL ? "/tmp" : path.join(__dirname, "../uploads");
+const upload = multer({ dest: uploadDir }); // For profile picture uploads
 
 // Register a new user
 router.post("/register", async (req, res) => {
