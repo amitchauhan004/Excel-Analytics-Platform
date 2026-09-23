@@ -54,7 +54,11 @@ const connectDB = async () => {
 
 // Connect DB middleware for serverless
 app.use(async (req, res, next) => {
-  await connectDB();
+  try {
+    await connectDB();
+  } catch (err) {
+    console.error("connectDB middleware error:", err);
+  }
   next();
 });
 
