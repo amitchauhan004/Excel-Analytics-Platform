@@ -34,7 +34,7 @@ const connectDB = async () => {
     return;
   }
 
-  let uri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/excel_analytics";
+  let uri = process.env.MONGO_URI ? process.env.MONGO_URI.trim() : "mongodb://127.0.0.1:27017/excel_analytics";
 
   if (!process.env.VERCEL) {
     // Local environment: Attempt cloud URI if provided, fallback seamlessly to local database if DNS SRV is refused by local ISP
