@@ -49,9 +49,9 @@ const connectDB = async () => {
       console.warn("⚠️ Cloud SRV DNS lookup failed locally. Auto-switching to Local MongoDB...");
       uri = "mongodb://127.0.0.1:27017/excel_analytics";
     }
-  } else if (process.env.VERCEL && uri.includes("localhost")) {
-    console.error("⚠️ MONGO_URI is pointing to localhost on Vercel. Please set MongoDB Atlas cloud URI in Vercel settings.");
-    return;
+  } else if (process.env.VERCEL && (!process.env.MONGO_URI || uri.includes("localhost") || uri.includes("127.0.0.1"))) {
+    console.error("⚠️ MONGO_URI is missing or pointing to localhost on Vercel. Please set MongoDB Atlas cloud URI in Vercel Environment Variables.");
+    throw new Error("MONGO_URI is missing or invalid on Vercel. Please set MONGO_URI in Vercel Environment Variables.");
   }
 
   try {
@@ -60,6 +60,7 @@ const connectDB = async () => {
     console.log("MongoDB connected:", uri.includes("127.0.0.1") || uri.includes("localhost") ? "Local Database" : "Cloud Database");
   } catch (err) {
     console.error("MongoDB connection error:", err.message);
+    throw err;
   }
 };
 
@@ -67,10 +68,15 @@ const connectDB = async () => {
 app.use(async (req, res, next) => {
   try {
     await connectDB();
+    next();
   } catch (err) {
-    console.error("connectDB middleware error:", err);
+    console.error("connectDB middleware error:", err.message);
+    return res.status(500).json({
+      success: false,
+      error: "Database Connection Failure",
+      message: `Failed to connect to MongoDB: ${err.message}. Please verify MONGO_URI in Vercel settings and MongoDB Atlas Network Access (0.0.0.0/0).`
+    });
   }
-  next();
 });
 
 // Root / Health check route

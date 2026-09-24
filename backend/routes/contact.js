@@ -112,7 +112,8 @@ router.post("/", async (req, res) => {
     console.error("Error in contact route:", err);
     return res.status(500).json({
       success: false,
-      message: "An error occurred while submitting your message. Please try again later.",
+      message: err.message || "An error occurred while submitting your message.",
+      error: err.toString()
     });
   }
 });
