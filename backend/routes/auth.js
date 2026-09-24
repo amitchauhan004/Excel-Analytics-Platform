@@ -25,36 +25,43 @@ router.post("/register", async (req, res) => {
   }
 
   try {
-    let user = await User.findOne({ email });
+    const cleanEmail = email.toLowerCase().trim();
+    let user = await User.findOne({ email: cleanEmail });
     if (user) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ msg: "User already exists with this email address" });
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = new User({ name, email, password: hashedPassword });
+    user = new User({
+      name: name.trim(),
+      email: cleanEmail,
+      password: hashedPassword,
+    });
     await user.save();
 
     // Generate JWT token
-    const token = jwt.sign({ user: { id: user.id } }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { user: { id: user.id } },
+      process.env.JWT_SECRET || "xcelflow_jwt_secret_key_2025",
+      { expiresIn: "7d" }
+    );
 
-    // Return the same response format as login
+    // Return response
     res.status(201).json({
       token,
       user: {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role,
-        profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null
+        role: user.role || "user",
+        profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null,
       },
     });
   } catch (err) {
     console.error("Error during registration:", err);
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ msg: "Server error during registration" });
   }
 });
 
@@ -67,7 +74,8 @@ router.post("/login", async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ email });
+    const cleanEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: cleanEmail });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -77,9 +85,11 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ user: { id: user.id } }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { user: { id: user.id } },
+      process.env.JWT_SECRET || "xcelflow_jwt_secret_key_2025",
+      { expiresIn: "7d" }
+    );
 
     res.json({
       token,
@@ -87,13 +97,13 @@ router.post("/login", async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role, // Include role in the response
-        profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null
+        role: user.role || "user",
+        profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null,
       },
     });
   } catch (err) {
     console.error("Error during login:", err);
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ msg: "Server error during login" });
   }
 });
 

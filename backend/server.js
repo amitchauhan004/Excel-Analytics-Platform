@@ -96,6 +96,7 @@ app.use("/api/forecast", require("./routes/forecast")); // Add Predictive Foreca
 app.use("/api/multilink", require("./routes/multilink")); // Add Multi-Link route
 
 // Advanced Intelligence Routes
+app.use("/api/contact", require("./routes/contact"));
 app.use("/api/workflow", require("./routes/workflow"));
 app.use("/api/health", require("./routes/health"));
 app.use("/api/explain", require("./routes/explain"));
