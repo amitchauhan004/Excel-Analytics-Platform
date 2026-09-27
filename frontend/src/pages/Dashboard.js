@@ -9,7 +9,6 @@ import AIInsightPanel from "../components/AIInsightPanel";
 import { cleanChartData } from "../utils/chartConfig";
 import { useToast, ConfirmDialog } from "../components/Toast";
 import BusinessHealthGauge from "../components/BusinessHealthGauge";
-import { getProfilePicUrl } from "../utils/profileUtils";
 
 const Dashboard = () => {
   const { success, error } = useToast();
@@ -298,7 +297,7 @@ const Dashboard = () => {
               >
                 {user?.profilePic ? (
                   <img
-                    src={getProfilePicUrl(user.profilePic)}
+                    src={user.profilePic.startsWith('http') ? user.profilePic : `${API_BASE_URL.replace('/api/', '')}${user.profilePic}`}
                     alt="User Profile"
                     className="w-9 h-9 rounded-xl object-cover ring-2 ring-sky-500/30"
                   />
