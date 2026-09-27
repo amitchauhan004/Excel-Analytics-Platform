@@ -13,7 +13,8 @@
     "start": "CHOKIDAR_USEPOLLING=true react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "seed:admin": "npm --prefix backend run seed:admin"
   },
   "overrides": {
     "xlsx": {

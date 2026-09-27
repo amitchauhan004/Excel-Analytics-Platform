@@ -203,7 +203,6 @@ const PrivacyPolicy = () => {
                 <div className="space-y-2 text-secondary-700">
                   <p><strong>Product:</strong> XcelFlow by ZAMYT</p>
                   <p><strong>Company:</strong> ZAMYT</p>
-                  <p><strong>Team:</strong> ZAMYT Team</p>
                   <p>
                     <strong>Phone:</strong>{" "}
                     <a href="tel:+918058637318" className="text-primary-600 hover:text-primary-700">

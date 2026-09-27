@@ -12,8 +12,8 @@ import API_BASE_URL from "../apiConfig";
 export const getProfilePicUrl = (profilePic) => {
   if (!profilePic) return null;
 
-  // If it's already a full URL, return as is
-  if (profilePic.startsWith('http')) {
+  // If it's already a full URL or Data URL (Base64), return as is
+  if (profilePic.startsWith('http') || profilePic.startsWith('data:')) {
     return profilePic;
   }
 

@@ -48,6 +48,13 @@ router.post("/register", async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    // Helper to format profile picture URL
+    const formatProfilePic = (pic) => {
+      if (!pic) return null;
+      if (pic.startsWith("data:") || pic.startsWith("http")) return pic;
+      return `/api/auth/profile-pic/${path.basename(pic)}`;
+    };
+
     // Return response
     res.status(201).json({
       token,
@@ -56,7 +63,7 @@ router.post("/register", async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role || "user",
-        profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null,
+        profilePic: formatProfilePic(user.profilePic),
       },
     });
   } catch (err) {
@@ -98,7 +105,7 @@ router.post("/login", async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role || "user",
-        profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null,
+        profilePic: formatProfilePic(user.profilePic),
       },
     });
   } catch (err) {
@@ -136,7 +143,7 @@ router.post("/google", async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null
+        profilePic: formatProfilePic(user.profilePic)
       },
     });
   } catch (err) {
@@ -181,13 +188,16 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-// Serve profile picture
+// Serve profile picture (Legacy fallback)
 router.get("/profile-pic/:filename", (req, res) => {
   const safeFilename = path.basename(req.params.filename);
-  const filePath = path.join(__dirname, "../uploads", safeFilename);
+  const filePathUploads = path.join(__dirname, "../uploads", safeFilename);
+  const filePathTmp = path.join("/tmp", safeFilename);
 
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
+  if (fs.existsSync(filePathUploads)) {
+    res.sendFile(filePathUploads);
+  } else if (fs.existsSync(filePathTmp)) {
+    res.sendFile(filePathTmp);
   } else {
     res.status(404).json({ error: "Profile picture not found" });
   }
@@ -210,22 +220,37 @@ router.put("/update", authMiddleware, upload.single("profilePic"), async (req, r
       user.password = await bcrypt.hash(password, salt);
     }
 
-    // Handle profile picture removal
+    // Handle profile picture removal or upload
     if (removeProfilePic === "true" || removeProfilePic === true) {
-      // Delete old profile picture if exists
-      if (user.profilePic && fs.existsSync(path.join(__dirname, "../", user.profilePic))) {
-        fs.unlinkSync(path.join(__dirname, "../", user.profilePic));
+      if (user.profilePic && !user.profilePic.startsWith("data:") && fs.existsSync(path.join(__dirname, "../", user.profilePic))) {
+        try { fs.unlinkSync(path.join(__dirname, "../", user.profilePic)); } catch (e) {}
       }
       user.profilePic = null;
     } else if (req.file) {
-      // Delete old profile picture if exists
-      if (user.profilePic && fs.existsSync(path.join(__dirname, "../", user.profilePic))) {
-        fs.unlinkSync(path.join(__dirname, "../", user.profilePic));
+      try {
+        const mimeType = req.file.mimetype || "image/png";
+        const fileBuffer = fs.readFileSync(req.file.path);
+        const base64String = fileBuffer.toString("base64");
+        user.profilePic = `data:${mimeType};base64,${base64String}`;
+
+        // Clean up temp file
+        if (fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+        }
+      } catch (fileErr) {
+        console.error("Error converting uploaded profile picture to Base64:", fileErr);
+        user.profilePic = req.file.path;
       }
-      user.profilePic = req.file.path;
     }
 
     await user.save();
+
+    // Helper to format profile picture URL
+    const formatProfilePic = (pic) => {
+      if (!pic) return null;
+      if (pic.startsWith("data:") || pic.startsWith("http")) return pic;
+      return `/api/auth/profile-pic/${path.basename(pic)}`;
+    };
 
     // Return updated user data without password
     const updatedUser = {
@@ -233,7 +258,7 @@ router.put("/update", authMiddleware, upload.single("profilePic"), async (req, r
       name: user.name,
       email: user.email,
       role: user.role,
-      profilePic: user.profilePic ? `/api/auth/profile-pic/${path.basename(user.profilePic)}` : null
+      profilePic: formatProfilePic(user.profilePic)
     };
 
     res.json({ msg: "User updated successfully", user: updatedUser });

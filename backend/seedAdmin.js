@@ -1,3 +1,7 @@
+const dns = require('dns');
+try { dns.setServers(['8.8.8.8', '1.1.1.1']); } catch (e) {}
+try { dns.setDefaultResultOrder('ipv4first'); } catch (e) {}
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('./models/User');

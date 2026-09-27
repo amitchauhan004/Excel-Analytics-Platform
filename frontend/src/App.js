@@ -20,6 +20,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsConditions from "./pages/TermsConditions";
 import Layout from "./components/Layout";
 import { ToastProvider } from "./components/Toast";
+import AppDownloadBanner from "./components/AppDownloadBanner";
 
 function App() {
   // Global error handling for chart errors
@@ -68,6 +69,7 @@ function App() {
   return (
     <BrowserRouter>
       <ToastProvider>
+        <AppDownloadBanner />
         <Switch>
           {/* Public Routes */}
           <Route exact path="/" component={LandingPage} />

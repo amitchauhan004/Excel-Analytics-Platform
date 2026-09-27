@@ -1,0 +1,23 @@
+{
+  "short_name": "XcelFlow",
+  "name": "XcelFlow - AI Excel Analytics Platform by ZAMYT",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/XcelFlow.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f172a",
+  "theme_color": "#0284c7",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "description": "Transform Excel data into charts, dashboards, and AI insights in seconds with XcelFlow."
+}
