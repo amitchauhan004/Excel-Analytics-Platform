@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 const AppDownloadBanner = () => {
+  const location = useLocation();
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -105,8 +107,8 @@ const AppDownloadBanner = () => {
     setIsVisible(true);
   };
 
-  // If running inside PWA standalone mode, don't show anything
-  if (isStandalone) return null;
+  // Only show notification on the Landing Page ("/") and when not in PWA standalone mode
+  if (isStandalone || location.pathname !== "/") return null;
 
   return (
     <>

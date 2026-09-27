@@ -821,25 +821,30 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 py-12 text-slate-500 text-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
+      <footer className="bg-slate-950 border-t border-slate-900 py-10 pb-24 sm:pb-10 text-slate-400 text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          
+          <div className="flex items-center justify-center md:justify-start gap-3">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center p-1.5 shadow-lg shadow-sky-500/20">
               <img src="/logo.png" alt="XcelFlow Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="font-bold text-slate-300">XcelFlow by ZAMYT</span>
+            <span className="font-bold text-slate-200">XcelFlow by ZAMYT</span>
           </div>
 
-          <div className="flex items-center gap-6 text-slate-400 text-xs">
-            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="/terms-conditions" className="hover:text-white transition-colors">Terms of Service</Link>
-            <a href="#contact" onClick={(e) => scrollToSection(e, "contact")} className="hover:text-white transition-colors cursor-pointer">Contact Us</a>
-            <a href="mailto:support@zamyt.in" className="hover:text-white transition-colors">Support</a>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-slate-400">
+            <Link to="/privacy-policy" className="hover:text-white transition-colors whitespace-nowrap">Privacy Policy</Link>
+            <span className="text-slate-800 hidden sm:inline">•</span>
+            <Link to="/terms-conditions" className="hover:text-white transition-colors whitespace-nowrap">Terms & Conditions</Link>
+            <span className="text-slate-800 hidden sm:inline">•</span>
+            <a href="#contact" onClick={(e) => scrollToSection(e, "contact")} className="hover:text-white transition-colors cursor-pointer whitespace-nowrap">Contact Us</a>
+            <span className="text-slate-800 hidden sm:inline">•</span>
+            <a href="mailto:support@zamyt.in" className="hover:text-white transition-colors whitespace-nowrap">Support</a>
           </div>
 
-          <div className="text-xs text-slate-600">
-            © 2025 XcelFlow • A ZAMYT Product. All rights reserved.
+          <div className="text-xs text-slate-500 font-medium text-center md:text-right">
+            © 2025 XcelFlow • ✨ A ZAMYT Product. All rights reserved.
           </div>
+
         </div>
       </footer>
     </div>

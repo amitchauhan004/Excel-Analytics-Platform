@@ -207,31 +207,43 @@ const Layout = ({ children }) => {
         </div>
 
         {/* Footer */}
-        <footer className="bg-white/80 backdrop-blur-md border-t border-secondary-200 py-6">
+        <footer className="bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-8 pb-24 sm:pb-8 mt-auto shadow-sm">
           <div className="max-w-7xl mx-auto px-4 lg:px-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-premium rounded-lg flex items-center justify-center">
-                  <img src="/logo.png" alt="Logo" className="h-5 w-5" />
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+              
+              {/* Brand Logo & Name */}
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 flex items-center justify-center p-1.5 shadow-md shadow-sky-500/20">
+                  <img src="/logo.png" alt="XcelFlow Logo" className="w-full h-full object-contain" />
                 </div>
-                <span className="text-lg font-display font-bold bg-gradient-to-r from-yellow-300 via-orange-400 to-red-500 bg-clip-text text-transparent">XcelFlow</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-lg font-display font-bold bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-700 bg-clip-text text-transparent">
+                    XcelFlow
+                  </span>
+                  <span className="text-xs text-slate-400 font-medium">by ZAMYT</span>
+                </div>
               </div>
 
-              <div className="flex items-center gap-6 text-sm text-secondary-600">
-                <Link to="/privacy-policy" className="hover:text-primary-600 transition-colors">
+              {/* Navigation Links */}
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold text-slate-600">
+                <Link to="/privacy-policy" className="hover:text-sky-600 transition-colors whitespace-nowrap">
                   Privacy Policy
                 </Link>
-                <Link to="/terms-conditions" className="hover:text-primary-600 transition-colors">
+                <span className="text-slate-300 hidden sm:inline">•</span>
+                <Link to="/terms-conditions" className="hover:text-sky-600 transition-colors whitespace-nowrap">
                   Terms & Conditions
                 </Link>
-                <a href="mailto:support@zamyt.in" className="hover:text-primary-600 transition-colors">
+                <span className="text-slate-300 hidden sm:inline">•</span>
+                <a href="mailto:support@zamyt.in" className="hover:text-sky-600 transition-colors whitespace-nowrap">
                   Contact Support
                 </a>
               </div>
 
-              <div className="text-sm text-secondary-500">
-                © 2025 XcelFlow. | ✨ A ZAMYT Product. | All Rights Reserved.
+              {/* Copyright Notice */}
+              <div className="text-xs text-slate-500 font-medium text-center md:text-right">
+                © 2025 XcelFlow. <span className="text-sky-600 font-semibold">✨ A ZAMYT Product.</span> All Rights Reserved.
               </div>
+
             </div>
           </div>
         </footer>

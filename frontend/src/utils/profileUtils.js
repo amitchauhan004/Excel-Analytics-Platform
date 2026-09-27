@@ -32,8 +32,15 @@ export const getProfilePicUrl = (profilePic) => {
  * @returns {string} - The user's initials
  */
 export const getUserInitials = (name) => {
-  if (!name) return "U";
-  return name.charAt(0).toUpperCase();
+  if (!name || typeof name !== "string") return "U";
+  const trimmed = name.trim();
+  if (!trimmed) return "U";
+
+  const parts = trimmed.split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  }
+  return trimmed.slice(0, 2).toUpperCase();
 };
 
 /**

@@ -9,6 +9,7 @@ import AIInsightPanel from "../components/AIInsightPanel";
 import { cleanChartData } from "../utils/chartConfig";
 import { useToast, ConfirmDialog } from "../components/Toast";
 import BusinessHealthGauge from "../components/BusinessHealthGauge";
+import { getUserInitials, getProfilePicUrl } from "../utils/profileUtils";
 
 const Dashboard = () => {
   const { success, error } = useToast();
@@ -28,6 +29,7 @@ const Dashboard = () => {
   const [selectedFileId, setSelectedFileId] = useState(null);
   const [selectedFileData, setSelectedFileData] = useState(null);
   const [confirmDialog, setConfirmDialog] = useState({ show: false, fileId: null, fileName: "" });
+  const [imgError, setImgError] = useState(false);
   const profileDropdownRef = useRef(null);
 
   // Handle clicking outside the profile dropdown
@@ -295,15 +297,16 @@ const Dashboard = () => {
                 className="flex items-center gap-3 p-1.5 pr-3 rounded-2xl hover:bg-slate-100/80 transition-all duration-200 border border-slate-200/60 bg-white/50"
                 onClick={toggleProfileDropdown}
               >
-                {user?.profilePic ? (
+                {user?.profilePic && !imgError ? (
                   <img
-                    src={user.profilePic.startsWith('http') ? user.profilePic : `${API_BASE_URL.replace('/api/', '')}${user.profilePic}`}
+                    src={getProfilePicUrl(user.profilePic)}
                     alt="User Profile"
-                    className="w-9 h-9 rounded-xl object-cover ring-2 ring-sky-500/30"
+                    className="w-9 h-9 rounded-xl object-cover ring-2 ring-sky-500/30 shadow-sm"
+                    onError={() => setImgError(true)}
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-tr from-sky-500 to-indigo-600 text-white font-bold text-sm shadow-sm">
-                    {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                  <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-tr from-sky-500 via-blue-600 to-indigo-600 text-white font-bold text-xs tracking-wider shadow-sm ring-2 ring-sky-500/30">
+                    {getUserInitials(user?.name)}
                   </div>
                 )}
                 <div className="hidden lg:block text-left">

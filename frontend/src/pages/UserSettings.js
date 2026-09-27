@@ -107,6 +107,13 @@ const UserSettings = () => {
 
   // Remove Photo Handler
   const handleRemoveProfilePic = () => {
+    // If a new local photo was selected but not saved yet, reset local state
+    if (profilePic && !currentProfilePic) {
+      setProfilePic(null);
+      success("Selected photo removed!");
+      return;
+    }
+
     setConfirmDialog({
       show: true,
       title: "Remove Profile Picture",
@@ -255,11 +262,12 @@ const UserSettings = () => {
     <div className="max-w-5xl mx-auto py-4 sm:py-8 px-2 sm:px-4">
       {confirmDialog.show && (
         <ConfirmDialog
+          isOpen={confirmDialog.show}
           title={confirmDialog.title}
           message={confirmDialog.message}
           type={confirmDialog.type}
           onConfirm={confirmDialog.onConfirm}
-          onCancel={() => setConfirmDialog({ show: false, title: '', message: '', onConfirm: null, type: 'danger' })}
+          onClose={() => setConfirmDialog({ show: false, title: '', message: '', onConfirm: null, type: 'danger' })}
         />
       )}
 
@@ -363,8 +371,8 @@ const UserSettings = () => {
                     <p className="text-xs text-slate-500 mb-2">{user?.email}</p>
                     <div className="flex items-center gap-2">
                       <span className="badge-pill-info">{user?.role === 'admin' ? '🛡️ System Admin' : '👤 Standard Member'}</span>
-                      {currentProfilePic && (
-                        <button type="button" onClick={handleRemoveProfilePic} className="text-xs text-rose-600 hover:underline font-semibold">Remove Photo</button>
+                      {(currentProfilePic || profilePic) && (
+                        <button type="button" onClick={handleRemoveProfilePic} className="text-xs text-rose-600 hover:underline font-semibold cursor-pointer">Remove Photo</button>
                       )}
                     </div>
                   </div>

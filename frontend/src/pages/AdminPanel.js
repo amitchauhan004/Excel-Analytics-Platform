@@ -6,6 +6,7 @@ import ChartErrorBoundary from "../components/ChartErrorBoundary";
 import { cleanChartData } from "../utils/chartConfig";
 import { useToast } from "../components/Toast";
 import API_BASE_URL from "../apiConfig";
+import { getUserInitials } from "../utils/profileUtils";
 
 
 const AdminPanel = () => {
@@ -1036,7 +1037,7 @@ const AdminPanel = () => {
                 />
 
                 <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 text-slate-700 font-bold text-sm flex items-center justify-center shrink-0">
-                  {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                  {getUserInitials(user.name)}
                 </div>
 
                 <div>
@@ -1566,7 +1567,7 @@ const AdminPanel = () => {
           <div className="bg-white rounded-2xl border border-slate-200/80 p-6 max-w-md w-full shadow-2xl animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center gap-4 mb-5 border-b border-slate-100 pb-4">
               <div className="w-14 h-14 rounded-full bg-sky-600 text-white font-extrabold text-xl flex items-center justify-center shrink-0 shadow-xs">
-                {modalUser.name ? modalUser.name.charAt(0).toUpperCase() : "U"}
+                {getUserInitials(modalUser.name)}
               </div>
               <div>
                 <h2 className="text-lg font-bold text-slate-900 tracking-tight">{modalUser.name}</h2>

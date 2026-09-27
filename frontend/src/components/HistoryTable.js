@@ -273,10 +273,10 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto pt-2.5 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0 justify-end">
                 <button
                   onClick={() => handleDownload(file)}
-                  className="btn-secondary py-1.5 px-3 text-xs flex items-center gap-1.5"
+                  className="btn-secondary py-1.5 px-3 text-xs flex items-center justify-center gap-1.5 flex-1 sm:flex-initial"
                 >
                   <svg className="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -285,7 +285,7 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
                 </button>
                 <button
                   onClick={() => handleAnalyze(file._id)}
-                  className="btn-primary py-1.5 px-3 text-xs flex items-center gap-1.5"
+                  className="btn-primary py-1.5 px-3 text-xs flex items-center justify-center gap-1.5 flex-1 sm:flex-initial"
                 >
                   <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -294,7 +294,7 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
                 </button>
                 <button
                   onClick={() => handleDelete(file._id)}
-                  className="bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold py-1.5 px-3 rounded-xl border border-rose-200 text-xs transition-all flex items-center gap-1"
+                  className="bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold py-1.5 px-3 rounded-xl border border-rose-200 text-xs transition-all flex items-center justify-center gap-1 flex-1 sm:flex-initial"
                 >
                   <svg className="w-3.5 h-3.5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
