@@ -1,9 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Layout = ({ children }) => {
   const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const checkStandalone = () => {
+      const isStandaloneMode =
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true ||
+        (document.referrer && document.referrer.includes("android-app://"));
+      setIsStandalone(isStandaloneMode);
+    };
+
+    checkStandalone();
+
+    const mediaQuery = window.matchMedia("(display-mode: standalone)");
+    const handler = (e) => setIsStandalone(e.matches);
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handler);
+    }
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handler);
+      }
+    };
+  }, []);
 
   const navItems = [
     {
@@ -159,7 +184,6 @@ const Layout = ({ children }) => {
           ))}
         </nav>
 
-
         {/* Sidebar Footer */}
         <div className="mt-auto p-4 border-t border-white/10 shrink-0">
           <div className="text-center">
@@ -200,14 +224,104 @@ const Layout = ({ children }) => {
           </div>
         </header>
 
-        <div className="flex-1 p-4 lg:p-8 overflow-auto">
+        <div className={`flex-1 p-4 lg:p-8 overflow-auto ${isStandalone ? 'pb-24 lg:pb-8' : ''}`}>
           <div className="max-w-7xl mx-auto">
             {children}
           </div>
         </div>
 
+        {/* Native Mobile App Bottom Navigation Bar (ONLY active in installed PWA standalone mode) */}
+        {isStandalone && (
+          <>
+            {/* Fixed Bottom Bar */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 text-white shadow-2xl px-2 py-1.5 flex items-center justify-around">
+              {[
+                navItems[0], // Dashboard
+                navItems[1], // Upload
+                navItems[2], // Analyze
+                navItems[4], // AI Insights
+              ].map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsMoreMenuOpen(false)}
+                  className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 ${
+                    location.pathname === item.path
+                      ? "text-sky-400 font-bold scale-105"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <div className={`p-1.5 rounded-xl transition-all ${
+                    location.pathname === item.path ? "bg-sky-500/20 text-sky-400 ring-1 ring-sky-500/40" : ""
+                  }`}>
+                    {item.icon}
+                  </div>
+                  <span className="text-[10px] font-medium tracking-tight mt-0.5">{item.label.split(" ")[0]}</span>
+                </Link>
+              ))}
+
+              {/* More Menu Button */}
+              <button
+                onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
+                className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 ${
+                  isMoreMenuOpen ? "text-sky-400 font-bold" : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <div className={`p-1.5 rounded-xl transition-all ${
+                  isMoreMenuOpen ? "bg-sky-500/20 text-sky-400 ring-1 ring-sky-500/40" : ""
+                }`}>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                </div>
+                <span className="text-[10px] font-medium tracking-tight mt-0.5">More</span>
+              </button>
+            </div>
+
+            {/* Slide-Up "More" Sheet Overlay */}
+            {isMoreMenuOpen && (
+              <div
+                className="lg:hidden fixed inset-0 z-[9985] bg-slate-950/80 backdrop-blur-md flex flex-col justify-end animate-fadeIn"
+                onClick={() => setIsMoreMenuOpen(false)}
+              >
+                <div
+                  className="bg-slate-900 border-t border-slate-700/80 rounded-t-3xl p-5 pb-24 text-white shadow-2xl space-y-2 animate-slideUp"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="w-12 h-1.5 bg-slate-700 rounded-full mx-auto mb-4"></div>
+                  <h3 className="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3 px-2">More App Features</h3>
+                  
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      navItems[3], // History
+                      navItems[5], // Workflow Advisor
+                      navItems[6], // Data Story
+                      navItems[7], // Simulation
+                      navItems[8], // User Settings
+                    ].map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => setIsMoreMenuOpen(false)}
+                        className={`flex items-center gap-3 p-3 rounded-2xl transition-all ${
+                          location.pathname === item.path
+                            ? "bg-sky-500/20 text-sky-400 border border-sky-500/40 font-bold"
+                            : "bg-slate-800/80 text-slate-300 hover:bg-slate-800"
+                        }`}
+                      >
+                        <div className="p-2 rounded-xl bg-slate-700/50 text-sky-400">{item.icon}</div>
+                        <span className="text-xs font-semibold">{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
         {/* Footer */}
-        <footer className="bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-8 pb-24 sm:pb-8 mt-auto shadow-sm">
+        <footer className={`bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-8 ${isStandalone ? 'pb-28 sm:pb-8' : 'pb-24 sm:pb-8'} mt-auto shadow-sm`}>
           <div className="max-w-7xl mx-auto px-4 lg:px-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
               

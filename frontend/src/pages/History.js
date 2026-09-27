@@ -3,6 +3,7 @@ import API_BASE_URL from "../apiConfig";
 
 import axios from "axios";
 import ConfirmationModal from "../components/ConfirmationModal";
+import { downloadFile } from "../utils/fileDownload";
 
 const History = () => {
   const [files, setFiles] = useState([]);
@@ -184,15 +185,7 @@ const History = () => {
 
               <div className="flex items-center gap-2 shrink-0">
                 <button
-                  onClick={() => {
-                    if (file.storedName) {
-                      window.open(`${API_BASE_URL}files/download/${file.storedName}`, "_blank");
-                    } else if (file.downloadUrl) {
-                      window.open(`${API_BASE_URL.replace('/api/', '')}${file.downloadUrl}`, "_blank");
-                    } else {
-                      alert("Download not available for this file");
-                    }
-                  }}
+                  onClick={() => downloadFile(file)}
                   className="btn-secondary text-xs py-2 px-4.5 flex items-center gap-1.5"
                 >
                   <svg className="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

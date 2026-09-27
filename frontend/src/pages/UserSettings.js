@@ -349,16 +349,16 @@ const UserSettings = () => {
 
               <form onSubmit={handleUpdateProfile}>
                 {/* Avatar Section */}
-                <div className="flex items-center gap-6 mb-8 p-4 bg-slate-50 rounded-2xl border border-slate-200/60">
-                  <div className="relative">
-                    <div className="w-20 h-20 rounded-full bg-sky-100 border-2 border-sky-300 flex items-center justify-center overflow-hidden">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6 mb-8 p-4 sm:p-5 bg-slate-50/80 rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+                  <div className="relative shrink-0">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-sky-100 to-indigo-100 border-2 border-sky-400/40 flex items-center justify-center overflow-hidden shadow-md">
                       {getLocalProfilePicUrl() ? (
                         <img src={getLocalProfilePicUrl()} alt="Profile Avatar" className="w-full h-full object-cover" />
                       ) : (
-                        <span className="text-sky-700 font-bold text-2xl">{user ? getUserInitials(user.name) : "U"}</span>
+                        <span className="text-sky-700 font-bold text-2xl tracking-wider">{user ? getUserInitials(user.name) : "U"}</span>
                       )}
                     </div>
-                    <label htmlFor="profile-pic-input" className="absolute bottom-0 right-0 w-7 h-7 bg-sky-600 hover:bg-sky-700 text-white rounded-full flex items-center justify-center cursor-pointer shadow-md transition-all">
+                    <label htmlFor="profile-pic-input" className="absolute bottom-0 right-0 w-7 h-7 bg-sky-600 hover:bg-sky-700 text-white rounded-full flex items-center justify-center cursor-pointer shadow-md transition-all ring-2 ring-white" title="Upload Photo">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       </svg>
@@ -366,13 +366,15 @@ const UserSettings = () => {
                     <input id="profile-pic-input" type="file" accept="image/*" onChange={(e) => setProfilePic(e.target.files[0])} className="hidden" />
                   </div>
 
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-base">{user?.name || "User"}</h3>
-                    <p className="text-xs text-slate-500 mb-2">{user?.email}</p>
-                    <div className="flex items-center gap-2">
-                      <span className="badge-pill-info">{user?.role === 'admin' ? '🛡️ System Admin' : '👤 Standard Member'}</span>
+                  <div className="min-w-0 flex-1 w-full">
+                    <h3 className="font-bold text-slate-900 text-base sm:text-lg truncate">{user?.name || "User"}</h3>
+                    <p className="text-xs text-slate-500 mb-3 truncate max-w-full">{user?.email}</p>
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                      <span className="badge-pill-info whitespace-nowrap">{user?.role === 'admin' ? '🛡️ System Admin' : '👤 Standard Member'}</span>
                       {(currentProfilePic || profilePic) && (
-                        <button type="button" onClick={handleRemoveProfilePic} className="text-xs text-rose-600 hover:underline font-semibold cursor-pointer">Remove Photo</button>
+                        <button type="button" onClick={handleRemoveProfilePic} className="text-xs text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200/80 px-2.5 py-1 rounded-lg font-semibold cursor-pointer transition-colors whitespace-nowrap">
+                          Remove Photo
+                        </button>
                       )}
                     </div>
                   </div>

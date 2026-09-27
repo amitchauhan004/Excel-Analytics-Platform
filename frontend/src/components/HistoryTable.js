@@ -3,6 +3,7 @@ import axios from "axios";
 import API_BASE_URL from "../apiConfig";
 
 import { useHistory } from "react-router-dom";
+import { downloadFile } from "../utils/fileDownload";
 
 const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange, selectedView }) => {
   const [files, setFiles] = useState(propFiles);
@@ -131,11 +132,7 @@ const HistoryTable = ({ files: propFiles, onFileDeleted, historyType, dateRange,
   };
 
   const handleDownload = (file) => {
-    if (file.downloadUrl) {
-      window.open(`${API_BASE_URL.replace('/api/', '')}${file.downloadUrl}`, "_blank");
-    } else {
-      alert("Download URL not available");
-    }
+    downloadFile(file);
   };
 
   const getViewTitle = () => {
