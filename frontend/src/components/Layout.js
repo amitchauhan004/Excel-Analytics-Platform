@@ -233,8 +233,8 @@ const Layout = ({ children }) => {
         {/* Native Mobile App Bottom Navigation Bar (ONLY active in installed PWA standalone mode) */}
         {isStandalone && (
           <>
-            {/* Fixed Bottom Bar */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 text-white shadow-2xl px-2 py-1.5 flex items-center justify-around">
+            {/* Fixed White Light Theme Bottom Bar */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[9990] bg-white/95 backdrop-blur-xl border-t border-slate-200/90 text-slate-700 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] px-2 py-1.5 flex items-center justify-around">
               {[
                 navItems[0], // Dashboard
                 navItems[1], // Upload
@@ -247,16 +247,16 @@ const Layout = ({ children }) => {
                   onClick={() => setIsMoreMenuOpen(false)}
                   className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 ${
                     location.pathname === item.path
-                      ? "text-sky-400 font-bold scale-105"
-                      : "text-slate-400 hover:text-white"
+                      ? "text-sky-600 font-bold scale-105"
+                      : "text-slate-500 hover:text-slate-900"
                   }`}
                 >
                   <div className={`p-1.5 rounded-xl transition-all ${
-                    location.pathname === item.path ? "bg-sky-500/20 text-sky-400 ring-1 ring-sky-500/40" : ""
+                    location.pathname === item.path ? "bg-sky-50 text-sky-600 ring-1 ring-sky-200 shadow-sm" : ""
                   }`}>
                     {item.icon}
                   </div>
-                  <span className="text-[10px] font-medium tracking-tight mt-0.5">{item.label.split(" ")[0]}</span>
+                  <span className="text-[10px] font-semibold tracking-tight mt-0.5">{item.label.split(" ")[0]}</span>
                 </Link>
               ))}
 
@@ -264,31 +264,31 @@ const Layout = ({ children }) => {
               <button
                 onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
                 className={`flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-xl transition-all duration-200 ${
-                  isMoreMenuOpen ? "text-sky-400 font-bold" : "text-slate-400 hover:text-white"
+                  isMoreMenuOpen ? "text-sky-600 font-bold" : "text-slate-500 hover:text-slate-900"
                 }`}
               >
                 <div className={`p-1.5 rounded-xl transition-all ${
-                  isMoreMenuOpen ? "bg-sky-500/20 text-sky-400 ring-1 ring-sky-500/40" : ""
+                  isMoreMenuOpen ? "bg-sky-50 text-sky-600 ring-1 ring-sky-200 shadow-sm" : ""
                 }`}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 </div>
-                <span className="text-[10px] font-medium tracking-tight mt-0.5">More</span>
+                <span className="text-[10px] font-semibold tracking-tight mt-0.5">More</span>
               </button>
             </div>
 
-            {/* Slide-Up "More" Sheet Overlay */}
+            {/* Slide-Up "More" Sheet Overlay (Light Theme) */}
             {isMoreMenuOpen && (
               <div
-                className="lg:hidden fixed inset-0 z-[9985] bg-slate-950/80 backdrop-blur-md flex flex-col justify-end animate-fadeIn"
+                className="lg:hidden fixed inset-0 z-[9985] bg-slate-900/40 backdrop-blur-sm flex flex-col justify-end animate-fadeIn"
                 onClick={() => setIsMoreMenuOpen(false)}
               >
                 <div
-                  className="bg-slate-900 border-t border-slate-700/80 rounded-t-3xl p-5 pb-24 text-white shadow-2xl space-y-2 animate-slideUp"
+                  className="bg-white border-t border-slate-200 rounded-t-3xl p-5 pb-24 text-slate-900 shadow-2xl space-y-2 animate-slideUp"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="w-12 h-1.5 bg-slate-700 rounded-full mx-auto mb-4"></div>
+                  <div className="w-12 h-1.5 bg-slate-300 rounded-full mx-auto mb-4"></div>
                   <h3 className="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-3 px-2">More App Features</h3>
                   
                   <div className="grid grid-cols-2 gap-2">
@@ -303,13 +303,13 @@ const Layout = ({ children }) => {
                         key={item.path}
                         to={item.path}
                         onClick={() => setIsMoreMenuOpen(false)}
-                        className={`flex items-center gap-3 p-3 rounded-2xl transition-all ${
+                        className={`flex items-center gap-3 p-3 rounded-2xl transition-all border ${
                           location.pathname === item.path
-                            ? "bg-sky-500/20 text-sky-400 border border-sky-500/40 font-bold"
-                            : "bg-slate-800/80 text-slate-300 hover:bg-slate-800"
+                            ? "bg-sky-50 text-sky-700 border-sky-300 font-bold shadow-xs"
+                            : "bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200/60"
                         }`}
                       >
-                        <div className="p-2 rounded-xl bg-slate-700/50 text-sky-400">{item.icon}</div>
+                        <div className="p-2 rounded-xl bg-white text-sky-600 border border-slate-200/60 shadow-2xs">{item.icon}</div>
                         <span className="text-xs font-semibold">{item.label}</span>
                       </Link>
                     ))}
